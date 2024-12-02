@@ -43,5 +43,8 @@ class Tree {
   }
 }
 
-let b = [1, 2, 3, 4, 5, 6, 7];
+let b = [];
+for (let i = 0; i < 8; i++) {
+  b.push(Math.floor(Math.random() * 45));
+}
 let a = new Tree(b);

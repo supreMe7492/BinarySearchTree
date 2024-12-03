@@ -1,3 +1,5 @@
+const { error } = require("console");
+
 class Node {
   constructor(data) {
     this.data = data;
@@ -25,6 +27,26 @@ class Tree {
       return root;
     }
   }
+  insert(value) {
+    let root = this.root;
+    while (true) {
+      if (value < root.data) {
+        if (root.left == null) {
+          root.left = new Node(value);
+          return;
+        }
+        root = root.left;
+      } else if (value == root.data) {
+        throw new Error("The value is already in the tree");
+      } else {
+        if (root.right == null) {
+          root.right = new Node(value);
+          return;
+        }
+        root = root.right;
+      }
+    }
+  }
   prettyPrint(node, prefix = "", isLeft = true) {
     if (node === null) {
       return;
@@ -48,3 +70,4 @@ for (let i = 0; i < 8; i++) {
   b.push(Math.floor(Math.random() * 45));
 }
 let a = new Tree(b);
+a.insert(34);

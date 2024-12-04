@@ -47,6 +47,40 @@ class Tree {
       }
     }
   }
+  delete(value, currentNode = this.root) {
+    if (currentNode == null) {
+      return null;
+    }
+
+    if (value < currentNode.data) {
+      currentNode.left = this.delete(value, currentNode.left);
+    } else if (value > currentNode.data) {
+      currentNode.right = this.delete(value, currentNode.right);
+    } else {
+      if (currentNode.left == null && currentNode.right == null) {
+        return null;
+      }
+      if (currentNode.left == null) {
+        return currentNode.right;
+      }
+      if (currentNode.right == null) {
+        return currentNode.left;
+      }
+      let successor = this.getSuccessor(currentNode);
+      currentNode.data = successor.data;
+      currentNode.right = this.delete(successor.data, currentNode.right);
+    }
+    return currentNode;
+  }
+
+  getSuccessor(node) {
+    let current = node.right;
+    while (current !== null && current.left !== null) {
+      current = current.left;
+    }
+    return current;
+  }
+
   prettyPrint(node, prefix = "", isLeft = true) {
     if (node === null) {
       return;
@@ -65,9 +99,8 @@ class Tree {
   }
 }
 
-let b = [];
-for (let i = 0; i < 8; i++) {
-  b.push(Math.floor(Math.random() * 45));
-}
+let b = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
 let a = new Tree(b);
-a.insert(34);
+a.delete(5);
+a.prettyPrint(a.root);

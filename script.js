@@ -80,7 +80,110 @@ class Tree {
     }
     return current;
   }
+  find(value, node = this.root) {
+    if (node == null) {
+      return null;
+    }
+    if (value < node.data) {
+      node = this.find(value, node.left);
+    }
+    if (value > node.data) {
+      node = this.find(value, node.right);
+    }
+    return node;
+  }
+  levelOrder(callback) {
+    if (typeof callback !== "function") {
+      throw new Error("provide a callback function");
+    }
+    let queue = [];
+    queue.push(this.root);
+    while (queue.length > 0) {
+      let currentNode = queue.shift();
+      callback(currentNode.data);
+      if (currentNode.left !== null) {
+        queue.push(currentNode.left);
+      }
+      if (currentNode.right !== null) {
+        queue.push(currentNode.right);
+      }
+    }
+  }
+  inOrder(callback) {
+    if (typeof callback !== "function") {
+      throw new Error("provide a callback function");
+    }
+    function traverse(node) {
+      if (node == null) {
+        return;
+      } else {
+        traverse(node.left);
+        callback(node);
+        traverse(node.right);
+      }
+    }
+    traverse(this.root);
+  }
+  postOrder(callback) {
+    if (typeof callback !== "function") {
+      throw new Error("provide a callback function");
+    }
+    function traverse(node) {
+      if (node == null) {
+        return;
+      } else {
+        traverse(node.left);
 
+        traverse(node.right);
+        callback(node);
+      }
+    }
+    traverse(this.root);
+  }
+  preOrder(callback) {
+    if (typeof callback !== "function") {
+      throw new Error("provide a callback function");
+    }
+    function traverse(node) {
+      if (node == null) {
+        return;
+      } else {
+        callback(node);
+        traverse(node.left);
+        traverse(node.right);
+      }
+    }
+    traverse(this.root);
+  }
+  height(node = this.root) {
+    let queue = [];
+    queue.push(node);
+    let h = 0;
+    while (queue.length > 0) {
+      let currentNode = queue.shift();
+      if (currentNode.left == null && currentNode.right == null) {
+        return h;
+      } else {
+        if (currentNode.left) queue.push(currentNode.left);
+        if (currentNode.right) queue.push(currentNode.right);
+        h++;
+      }
+    }
+  }
+  depth(node = this.root) {
+    let queue = [];
+    queue.push(node);
+    let d = 0;
+    while (queue.length > 0) {
+      for (let i = 0; i < queue.length; i++) {
+        let currentNode = queue.shift();
+        if (currentNode.left) queue.push(currentNode.left);
+        if (currentNode.right) queue.push(currentNode.right);
+      }
+      d++;
+    }
+    return d;
+  }
   prettyPrint(node, prefix = "", isLeft = true) {
     if (node === null) {
       return;
@@ -102,5 +205,4 @@ class Tree {
 let b = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 let a = new Tree(b);
-a.delete(5);
-a.prettyPrint(a.root);
+console.log(a.depth());

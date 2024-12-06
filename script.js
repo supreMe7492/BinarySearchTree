@@ -184,6 +184,24 @@ class Tree {
     }
     return d;
   }
+  isBalanced() {
+    const node = this.root;
+    const leftSubTree = this.depth(node.left);
+    const rightSubTree = this.depth(node.right);
+    if (leftSubTree - rightSubTree > 1) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+  reBalance() {
+    let newArr = [];
+    this.inOrder((a) => {
+      newArr.push(a);
+    });
+    this.root = this.buildTree(newArr);
+    return "balanced tree";
+  }
   prettyPrint(node, prefix = "", isLeft = true) {
     if (node === null) {
       return;
@@ -205,4 +223,4 @@ class Tree {
 let b = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
 let a = new Tree(b);
-console.log(a.depth());
+console.log(a.reBalance());
